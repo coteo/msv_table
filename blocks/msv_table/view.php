@@ -83,7 +83,7 @@ if (!empty($table_data)): ?>
                     $val = Markdown::defaultTransform($val);
 					$val = str_replace(array('<p>', '</p>'),'', $val);
 
-					if ($metadata[$rowcount][$colcount]->colspan > 1) {
+					if (isset($metadata[$rowcount][$colcount]->colspan) && $metadata[$rowcount][$colcount]->colspan > 1) {
 
 						for($i = $colcount + 1; $i < $metadata[$rowcount][$colcount]->colspan + $colcount; $i++ ) {
 							$redundantcells[$rowcount][$i] = true;
@@ -91,7 +91,7 @@ if (!empty($table_data)): ?>
 					}
 
 
-					if ($metadata[$rowcount][$colcount]->rowspan > 1 && $rowcount != 0) {
+					if (isset($metadata[$rowcount][$colcount]->rowspan)  && $metadata[$rowcount][$colcount]->rowspan > 1 && $rowcount != 0) {
 
 						for($i = $rowcount + 1; $i < $metadata[$rowcount][$colcount]->rowspan + $rowcount ; $i++ ) {
 							$redundantcells[$i][$colcount] = true;
@@ -108,9 +108,9 @@ if (!empty($table_data)): ?>
 					if (!isset($redundantcells[$rowcount][$colcount])) {
 
 						if ($rowcount == 0) {
-							$table .= '<' . $ct . ($metadata[$rowcount][$colcount]->colspan > 1 ? ' colspan="' . $metadata[$rowcount][$colcount]->colspan . '"' : '') .  ' class="col' . $colcount . $empty . ' ' .  $metadata[$rowcount][$colcount]->className . '">' . $val . '</' . $ct . '>';
+							$table .= '<' . $ct . (isset($metadata[$rowcount][$colcount]->colspan) && $metadata[$rowcount][$colcount]->colspan > 1 ? ' colspan="' . $metadata[$rowcount][$colcount]->colspan . '"' : '') . ' class="col' . $colcount . $empty . ' ' .  $metadata[$rowcount][$colcount]->className . '">' . $val . '</' . $ct . '>';
 						} else{
-							$table .= '<' . $ct . ($metadata[$rowcount][$colcount]->colspan > 1 ? ' colspan="' . $metadata[$rowcount][$colcount]->colspan . '" ': '') .  ($metadata[$rowcount][$colcount]->rowspan > 1 ? ' rowspan="' . $metadata[$rowcount][$colcount]->rowspan . '"' : '') . ' class="col' . $colcount . $empty . ' ' . $metadata[$rowcount][$colcount]->className  . '">' . $val . '</' . $ct . '>';
+							$table .= '<' . $ct . (isset($metadata[$rowcount][$colcount]->colspan) && $metadata[$rowcount][$colcount]->colspan > 1 ? ' colspan="' . $metadata[$rowcount][$colcount]->colspan . '"' : '') . (isset($metadata[$rowcount][$colcount]->rowspan) && $metadata[$rowcount][$colcount]->rowspan > 1 ? ' rowspan="' . $metadata[$rowcount][$colcount]->rowspan . '"' : '') . ' class="col' . $colcount . $empty . ' ' . (isset($metadata[$rowcount][$colcount]->className) ? $metadata[$rowcount][$colcount]->className : '') . '">' . $val . '</' . $ct . '>';
 						}
 
 					}
